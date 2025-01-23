@@ -29,9 +29,6 @@ jobs:
       - name: Install Packages
         run: npm install
 
-      - name: Upload pages
-        run: actions/upload-pages-artifact@v3
-
       - name: Deploy to gh-pages
         uses: actions/deploy-pages@v4
        
