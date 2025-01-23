@@ -7,32 +7,33 @@ on:
     branches: [ "main" ]
 
 jobs:
-    build:
-     name: Build and analyze
-     runs-on: ubuntu-latest
-     
-     strategy:
+  build:
+    name: Build and analyze
+    runs-on: ubuntu-latest
+
+    strategy:
       fail-fast: false
       matrix:
         include:
-        - language: javascript-typescript
-     steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
-          
-        - name: Use Node.js
-          uses: actions/setup-node@v2
-          with:
-            cache: 'npm'
-        
-        - name: Install Packages
-          uses: npm install
-        
-        - name: Build Page
-          uses: npm run app
+          - language: javascript-typescript
 
-        - name: Deploy to gh-pages
-          uses: peaceiris/actions-gh-pages@v6
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          cache: 'npm'
 
+      - name: Install Packages
+        run: npm install
 
+      - name: Build Page
+        run: npm run app
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
