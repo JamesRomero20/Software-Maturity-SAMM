@@ -29,8 +29,12 @@ jobs:
       - name: Install Packages
         run: npm install
 
+      - name: Install jekyll
+        run: actions/jekyll-build-pages@v1
+
+      - name: Upload pages
+        run: actions/upload-pages-artifact@v3
+
       - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+        uses: actions/deploy-pages@v4
+       
