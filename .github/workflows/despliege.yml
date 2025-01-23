@@ -29,9 +29,6 @@ jobs:
       - name: Install Packages
         run: npm install
 
-      - name: Install jekyll
-        run: actions/jekyll-build-pages@v1
-
       - name: Upload pages
         run: actions/upload-pages-artifact@v3
 
