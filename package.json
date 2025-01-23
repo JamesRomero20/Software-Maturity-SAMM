@@ -15,6 +15,7 @@
     "ejs": "^3.1.10",
     "express": "^4.21.0",
     "express-session": "^1.18.0",
+    "gh-pages": "^6.3.0",
     "mysql": "^2.18.1"
   }
 }
