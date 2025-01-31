@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principal</title>
+    <link rel="stylesheet" href="resources/css/style-principal.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <% if (login) { %>                
+        <h2>Usuario: <strong> <%= name %></strong></h2>
+    <% } %>
+    <header>
+        <div class="logo">Software Security</div>
+        <nav>
+            <ul>
+                <li><a href="principal">Principal</a></li>
+                <li><a href="cuestionario">Evaluación</a></li>
+                <li><a href="login">Cerrar sesion</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <div class="text-section">
+            <h1>SOFTWARE NIVEL DE MADUREZ</h1>
+            <p>Este es un software que permite medir el nivel de madurez de un proyecto de software dado, y con esto se puede determinar las mejoras o correciones que se vayan a tomar en cuenta para una mejora contínua</p>
+            <div class="buttons">
+                <a href="proyecto" class="btn-iniciar">Crear Proyecto</a>
+            </div>
+        </div>
+        <div class="image-section" style="background-image: url('https://s1.significados.com/foto/software-og.jpg'); background-size: cover; background-position: center; height: 400px;">
+        </div>
+    </div>
+
+</body>
+
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto</title>
+    <link rel="stylesheet" href="resources/css/style-proyecto.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo">Software Security</div>
+        <nav>
+            <ul>
+                <li><a href="principal">Principal</a></li>
+                <li><a href="cuestionario">Evaluación</a></li>
+                <li><a href="login">Cerrar sesion</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div style="justify-content: center;" class="container" id="container">
+      <div class="section register-section">
+        <h1>Registro Proyecto</h1>
+        <form action="proyecto" method="POST">
+            <label for="titulo">Título del proyecto</label>
+            <input type="text" name="titulo" required>
+            
+            <label for="descripcion">Descripción del proyecto</label>
+            <input type="text" name="descripcion" required>
+
+            <div style="display: flex; justify-content: space-between;">
+                <a href="principal" class="btn btn-cancel">Cancelar</a>
+                <button type="submit" class="btn btn-save">Guardar</button>
+            </div>
+        </form>
+      </div>
+   </div>
+
+    <script src="script.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+     <% if(typeof alert != "undefined") { %>
+        <script>
+            Swal.fire ({
+                title:'<%= alertTitle %>',
+                text:'<%= alertMessage %>',
+                icon:'<%= alertIcon %>',
+                showConfirmButton: <%= showConfirmButton %> ,
+                timer: <%= timer %> 
+            }).then(()=>{
+                window.location='/<%= ruta %>'
+            })
+        </script> 
+        <% } %>
+</body>
+</html>

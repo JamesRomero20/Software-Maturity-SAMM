@@ -4,20 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login</title>
-    <link rel="stylesheet" href="resources/css/style.css">
+    <link rel="stylesheet" href="resources/css/style-login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="login-form">
-        <h2>Inicio de Sesión</h2>
-        <form action="/auth" method="POST">
-            <input type="text" name="user" id="user" placeholder="Usuario" required>
-            <input type="password" name="pass" id="pass" placeholder="Contraseña" required>
-            <input type="submit" class="btn-login" value="Ingresar">
-        </form>
-
-        <a href="register" class="btn-register">Registro</a>
-
-    </div>
+    <body>
+        <div class="container">
+            <div class="login-section">
+                <h2>Iniciar Sesión</h2>
+                <form action="/auth" method="POST">
+                    <input type="text" name="user" placeholder="Usuario" required>
+                    <input type="password" name="pass" placeholder="Contraseña" required>
+                    <button class="btn btn-login">Ingresar</button>
+                </form>
+            </div>
+            <div class="register-section">
+                <h2>¡Bienvenido!</h2>
+                <p>Regístrate para comenzar</p>
+                <a href="register" class="btn btn-register">Registrarse</a>
+            </div>
+        </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
      <% if(typeof alert != "undefined") { %>

@@ -32,6 +32,83 @@ app.get('/register',(req, res)=>{
     res.render('register');
 })
 
+app.get('/principal',(req, res)=>{
+    if (req.session.loggedin) {
+		res.render('principal',{
+			login: true,
+			name: req.session.name			
+            
+		});		
+	} else {
+		res.render('index',{
+			login:false,
+			name:'Debe iniciar sesión',			
+		});				
+	}
+	res.end();
+})
+
+app.get('/cuestionario',(req, res)=>{
+    if (req.session.loggedin) {
+		res.render('cuestionario',{
+			login: true,
+			name: req.session.name,
+		});		
+	} else {
+		res.render('index',{
+			login:false,
+			name:'Debe iniciar sesión',			
+		});				
+	}
+	res.end();
+})
+
+
+app.get('/proyecto',(req, res)=>{
+    if (req.session.loggedin) {
+		res.render('proyecto',{
+			login: true,
+			name: req.session.name,			
+		});		
+	} else {
+		res.render('index',{
+			login:false,
+			name:'Debe iniciar sesión',			
+		});				
+	}
+	res.end();
+})
+
+app.post('/proyecto', async (req, res)=>{
+    const titulo = req.body.titulo;
+    const descripcion = req.body.descripcion;
+    connection.query('INSERT INTO proyecto SET ?', {titulo:titulo, descripcion:descripcion}, async(error, results)=>{
+        if(error){
+            res.render('proyecto', {
+                alert: true,
+                alertTitle: 'Error',
+                alertMessage: '¡Datos no registrados!',
+                alertIcon: 'error',
+                showConfirmButton: true,
+                timer: false,
+                ruta: 'proyecto'
+            });
+        }else{ 
+            res.render('proyecto', {
+                alert: true,
+                alertTitle: 'Registro existoso',
+                alertMessage: '¡Proyecto guardado!',
+                alertIcon: 'success',
+                showConfirmButton: false,
+                timer: 1500,
+                ruta: 'cuestionario'
+            });
+            
+        }
+    })
+})
+
+
 app.post('/register', async (req, res)=>{
     const user = req.body.user;
     const name = req.body.name;
@@ -52,8 +129,8 @@ app.post('/register', async (req, res)=>{
         }else{
             res.render('register', {
                 alert: true,
-                alertTitle: 'Registration',
-                alertMessage: '¡Success Registration!',
+                alertTitle: 'Registro',
+                alertMessage: '¡Registro existoso!',
                 alertIcon: 'success',
                 showConfirmButton: false,
                 timer: 1500,
@@ -80,7 +157,7 @@ app.post('/auth', async (req, res)=>{
                     ruta: 'login'
                 })
             }else{
-                req.session.loggedin = true;                
+                req.session.loggedin = true;             
 				req.session.name = results[0].name;
                 res.render('login',{
                     alert: true,
@@ -89,7 +166,7 @@ app.post('/auth', async (req, res)=>{
                     alertIcon: 'success',
                     showConfirmButton: false,
                     timer: 1500,
-                    ruta: ''
+                    ruta: 'principal'
                 })
             }
         })

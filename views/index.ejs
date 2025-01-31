@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Principal</title>
-    <link rel="stylesheet" href="resources/css/style.css">
+    <title>Inicio</title>
+    <link rel="stylesheet" href="resources/css/style-index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="contenedor">
-        <h1>Página de Inicio</h1>
+        <h1>Software Security</h1>
+        <h4>Este es un software para medir el nivel de madurez de un proyecto</h4>
         <% if (login) { %>                
-            <h1>Usuario conectado: <strong><%= name %></strong></h1>                        
+            <h2>Usuario conectado: <strong><%= name %></strong></h2>                        
             <a href="logout" class="a-logout">Logout</a>
-        <%} else { %>
-            <h1><strong><%= name %></strong></h1>   
+        <% } else { %>
+            <h3>Bienvenido, <strong><%= name %></strong></h3>   
             <a href="login" class="a-login">Ir a Login</a>
         <% } %>
-      </div>
+    </div>
 </body>
 </html>

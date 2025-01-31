@@ -1,0 +1,75 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f6f5f7;
+}
+.container {
+    display: flex;
+    width: 800px;
+    height: 500px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+.login-section, .register-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+.login-section {
+    background: #fff;
+}
+.register-section {
+    background: linear-gradient(135deg, #b9b8df, #3057d6);
+    color: #fff;
+    text-align: center;
+}
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-login {
+    background: #5967e6;
+    color: #fff;
+}
+.btn-login:hover {
+    background: #8a8281;
+}
+.btn-register {
+    background: transparent;
+    border: 2px solid #fff;
+    color: #fff;
+}
+.btn-register:hover {
+    background: #fff;
+    color: #a5c0e4;
+}
