@@ -49,11 +49,47 @@ app.get('/principal',(req, res)=>{
 })
 
 app.get('/cuestionario',(req, res)=>{
+    const proyectoId = req.session.proyectoId;
     if (req.session.loggedin) {
-		res.render('cuestionario',{
+        res.render('cuestionario',{
 			login: true,
 			name: req.session.name,
+            proyectoId: proyectoId 
 		});		
+	} else {
+		res.render('index',{
+			login:false,
+			name:'Debe iniciar sesión',	
+		});				
+	}
+	res.end();
+})
+
+
+app.get('/resultados', async (req, res)=>{
+    const proyectoId = req.session.proyectoId;
+    if (!proyectoId) {
+        return res.status(400).send('ID del proyecto no proporcionado');
+    }
+    connection.query('SELECT titulo, descripcion FROM proyecto WHERE id = ?', [proyectoId], (error, results) => {
+        if (error) {
+            return res.status(500).send('Error al consultar la base de datos');
+        }
+
+        if (results.length === 0) {
+            return res.status(404).send('Proyecto no encontrado');
+        }
+
+        const proyecto = results[0];
+        
+
+    if (req.session.loggedin) {
+            res.render('resultados', {
+            login: true,
+            name: req.session.name,
+            nombreProyecto: proyecto.titulo,
+            descripcionProyecto: proyecto.descripcion,
+        });	
 	} else {
 		res.render('index',{
 			login:false,
@@ -61,7 +97,8 @@ app.get('/cuestionario',(req, res)=>{
 		});				
 	}
 	res.end();
-})
+}) 
+}) 
 
 
 app.get('/proyecto',(req, res)=>{
@@ -94,6 +131,9 @@ app.post('/proyecto', async (req, res)=>{
                 ruta: 'proyecto'
             });
         }else{ 
+            const proyectoId = results.insertId;
+            req.session.proyectoId = proyectoId; 
+            
             res.render('proyecto', {
                 alert: true,
                 alertTitle: 'Registro existoso',

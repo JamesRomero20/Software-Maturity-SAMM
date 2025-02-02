@@ -6,6 +6,7 @@
     <title>Cuestionario de Evaluación</title>
     <link rel="stylesheet" href="resources/css/style-cuestionario.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <% if (login) { %>                
@@ -19,13 +20,13 @@
             </ul>
         </nav>
     </header>
-
     <div class="container">
         <h1>Cuestionario de Evaluación</h1>
         
         <form id="cuestionario">
             <div id="secciones-container"></div>
             <button type="button" onclick="calcularTotal()">Calcular Total</button>
+            <button type="button" onclick="guardarResultados()">Guardar</button>
         </form>
 
         <div id="dashboard">
@@ -304,7 +305,7 @@
         grafica.data.datasets[0].borderColor = colores;
         grafica.update(); 
     }
-}
+    }
 
     function getColorAleatorio() {
     const r = Math.floor(Math.random() * 256);
@@ -312,6 +313,22 @@
     const b = Math.floor(Math.random() * 256);
     return `rgba(${r}, ${g}, ${b}, 0.6)`;
     }
+
+    function guardarResultados() {
+    const resultados = secciones.map(seccion => ({
+        nombre: seccion.nombre,
+        puntaje: parseFloat(document.getElementById(`total-${seccion.id}`).innerText)
+    }));
+    const nivelMadurez = document.getElementById('nivel-madurez').innerText;
+    const mensajeMadurez = document.getElementById('mensaje-madurez').innerText;
+
+    // Convertir los resultados a JSON para pasarlos como parámetro
+    const resultadosJSON = JSON.stringify(resultados);
+
+    // Redirigir a la página de resultados con los datos en la URL
+    window.location.href = `resultados?resultados=${encodeURIComponent(resultadosJSON)}&nivelMadurez=${encodeURIComponent(nivelMadurez)}&mensajeMadurez=${encodeURIComponent(mensajeMadurez)}`;
+    }
+
 
     window.onload = generarPreguntas;
     </script>

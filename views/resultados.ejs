@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados del Cuestionario</title>
+    <link rel="stylesheet" href="resources/css/style-resultados.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <% if (login) { %>                
+        <h4>Usuario: <strong> <%= name %></strong></h4>
+    <% } %>
+
+    <header>
+        <div class="logo">Software Security</div>
+        <nav>
+            <ul>
+                <li><a href="principal">Principal</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Resultados del Cuestionario</h1>
+        <div class="card">
+            <h2 id="nombre-proyecto"><%= nombreProyecto %></h2>
+            <p id="descripcion-proyecto"><%= descripcionProyecto%></p>
+            <div class="resultados">
+                <h3>Resultados por Sección</h3>
+                <ul id="resultados-secciones"></ul>
+                <p><strong>Nivel de Madurez:</strong> <span id="nivel-madurez">0</span></p>
+                <p id="mensaje-madurez"></p>
+            </div>
+        </div>
+        <a href="principal" class="btn-volver">Volver a principal</a>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const resultados = JSON.parse(urlParams.get('resultados'));
+        const nivelMadurez = urlParams.get('nivelMadurez');
+        const mensajeMadurez = urlParams.get('mensajeMadurez');
+        document.getElementById('nivel-madurez').innerText = nivelMadurez;
+        document.getElementById('mensaje-madurez').innerText = mensajeMadurez;
+
+        const resultadosSecciones = document.getElementById('resultados-secciones');
+        resultados.forEach(seccion => {
+            const li = document.createElement('li');
+            li.innerText = `${seccion.nombre}: ${seccion.puntaje}`;
+            resultadosSecciones.appendChild(li);
+        });
+    </script>
+
+</body>
+</html>
