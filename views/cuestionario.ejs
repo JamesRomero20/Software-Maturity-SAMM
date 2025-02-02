@@ -48,6 +48,9 @@
                         <td><strong>Nivel de Madurez</strong></td>
                         <td id="nivel-madurez">0</td>
                     </tr>
+                    <tr>
+                        <td colspan="2" id="mensaje-madurez"></td>
+                    </tr>
                 </tfoot>
             </table>
             <div style="width: 80%; margin: 20px auto;">
@@ -250,19 +253,27 @@
             resultadosSecciones.appendChild(fila);
     });
     let promedio = totalGeneral / secciones.length;
+    
     let nivelMadurez;
+    let mensajeMadurez = '';
     if (promedio >= 0 && promedio <= 6) {
         nivelMadurez = 1;
+        mensajeMadurez = 'Nivel 1: Madurez inicial. Se requiere mejorar los procesos y controles de seguridad.';
     } else if (promedio >= 7 && promedio <= 12) {
         nivelMadurez = 2;
+        mensajeMadurez = 'Nivel 2: Madurez intermedia. Los procesos y controles de seguridad están en desarrollo, pero aún hay áreas de mejora.';
     } else if (promedio >= 13 && promedio <= 18) {
         nivelMadurez = 3;
+        mensajeMadurez = 'Nivel 3: Madurez avanzada. Los procesos y controles de seguridad están bien establecidos y son efectivos.';
     } else {
         nivelMadurez = "Fuera de rango";
+        mensajeMadurez = 'El promedio está fuera del rango esperado. Revise los datos ingresados.';
     }
+
     document.getElementById('total-general').innerText = totalGeneral.toFixed(2);
     document.getElementById('nivel-madurez').innerText = nivelMadurez;
     document.getElementById('total-general').innerText = totalGeneral;
+    document.getElementById('mensaje-madurez').innerText = mensajeMadurez;
 
     if (!grafica) {
         grafica = new Chart(document.getElementById('grafica-resultados'), {
