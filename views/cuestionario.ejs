@@ -6,7 +6,6 @@
     <title>Cuestionario de Evaluación</title>
     <link rel="stylesheet" href="resources/css/style-cuestionario.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <% if (login) { %>                
@@ -322,10 +321,8 @@
     const nivelMadurez = document.getElementById('nivel-madurez').innerText;
     const mensajeMadurez = document.getElementById('mensaje-madurez').innerText;
 
-    // Convertir los resultados a JSON para pasarlos como parámetro
     const resultadosJSON = JSON.stringify(resultados);
 
-    // Redirigir a la página de resultados con los datos en la URL
     window.location.href = `resultados?resultados=${encodeURIComponent(resultadosJSON)}&nivelMadurez=${encodeURIComponent(nivelMadurez)}&mensajeMadurez=${encodeURIComponent(mensajeMadurez)}`;
     }
 

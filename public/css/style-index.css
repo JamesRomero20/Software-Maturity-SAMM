@@ -9,36 +9,71 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(135deg, #9898a8, #3a5dcf);
+    background: #ffffff;
 }
 .contenedor {
     background: white;
-    padding: 30px;
-    border-radius: 12px;
+    padding: 80px;
+    border-radius: 0px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     text-align: center;
-    width: 400px;
+    width: 100vw;
+    margin-bottom:330px;
+    box-sizing: border-box; 
+    background-image: url('./backSAMM.jpg');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    height: auto;  
+
+}
+
+.cont {
+    position: absolute;  
+    top: 0;              
+    left: 300px;             
+    margin-top: 10px;  
+    
+}
+.contenedor2 {
+    position: absolute;  
+    top: 0;             
+    left: 50%;            
+    transform: translateX(-50%);  
+    margin-top: 450px;    
+    text-align: center;   
+    
+    display: flex;        
+    flex-direction: column; 
+    justify-content: center;  
+    align-items: center;      
+    width: 80%;           
+    box-sizing: border-box;  
+}
+p {
+    color: #ffffff;
 }
 h1 {
-    font-size: 24px;
+    font-size: 30px;
     margin-bottom: 20px;
-    color: #7985f0;
+    color: #000000;
 }
 h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #f0c079;
+    font-size: 15px;
+    margin-bottom: 5px;
+    color: #383c41;
 }
 h3 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #d4db68;
+    font-size: 15px;
+    margin-bottom: 5px;
+    color: #383c41;
 }
 h4 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #e66294;
+    font-size: 40px;
+    line-height: 1.2;
+    color: #ffffff;
 }
+
 
 .a-login, .a-logout {
     display: inline-block;
@@ -50,16 +85,38 @@ h4 {
     transition: background 0.3s ease;
 }
 .a-login {
-    background: #ff416c;
-    color: white;
+    background: none;       
+    color: #356864;          
+    border: 2px solid #356864;  
+    padding: 10px 20px;      
+    text-decoration: none;   
+    border-radius: 5px;      
+    transition: background-color 0.3s; 
 }
 .a-login:hover {
-    background: #ff4b2b;
+    background-color: #356864;  
+    color: white; 
 }
 .a-logout {
-    background: #333;
-    color: white;
+    background: none;       
+    color: #356864;         
+    border: 2px solid #356864;  
+    padding: 10px 20px;      
+    text-decoration: none;   
+    border-radius: 5px;      
+    transition: background-color 0.3s; 
 }
 .a-logout:hover {
-    background: #555;
+    background-color: #356864;  
+    color: white;   
+}
+
+.pie {
+    position: fixed; 
+    bottom: 0;       
+    left: 0;         
+    width: 100%;    
+    background-color: #66b7b8; 
+    padding: 20px 0; 
+    font-size: 15px;  
 }

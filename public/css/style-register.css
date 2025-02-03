@@ -31,7 +31,7 @@
             background: #fff;
         }
         .register-section {
-            background: linear-gradient(135deg, #9898a8, #3a5dcf);
+            background: linear-gradient(135deg, #9898a8, #356864);
             color: #fff;
             text-align: center;
         }
@@ -62,7 +62,7 @@
             color: #ffffff;
         }
         .btn-login:hover, .btn-save:hover {
-            background: #58fd49f3;
+            background: #383c41;
         }
         .btn-register, .btn-cancel {
             background: transparent;
@@ -70,6 +70,6 @@
             color: #fff;
         }
         .btn-register:hover, .btn-cancel:hover {
-            background: #ee5454;
+            background: #383c41;
             color: #fff;
         }

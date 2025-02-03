@@ -31,7 +31,7 @@ body {
     background: #fff;
 }
 .register-section {
-    background: linear-gradient(135deg, #b9b8df, #3057d6);
+    background: linear-gradient(135deg, #b9b8df, #356864);
     color: #fff;
     text-align: center;
 }
@@ -58,11 +58,12 @@ input {
     transition: 0.3s;
 }
 .btn-login {
-    background: #5967e6;
+    background: #356864; 
     color: #fff;
 }
 .btn-login:hover {
-    background: #8a8281;
+    background: #383c41; 
+    color: white; 
 }
 .btn-register {
     background: transparent;
@@ -71,5 +72,5 @@ input {
 }
 .btn-register:hover {
     background: #fff;
-    color: #a5c0e4;
+    color: #383c41;
 }

@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #ceb83d54;
+    background-color: #ffffff;
     text-align: left;
 }
 header {
@@ -10,12 +10,14 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 15px 50px;
-    background-color: rgb(142, 197, 204);
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 6px rgb(255, 255, 255);
+    background-image: url('./backSAMM.jpg');
 }
 .logo {
     font-size: 24px;
     font-weight: bold;
+    color: #ffffff;
+    margin-left: 60px;
 }
 nav ul {
     list-style: none;
@@ -27,19 +29,19 @@ nav ul li {
 }
 nav ul li a {
     text-decoration: none;
-    color: black;
+    color: #ffffff;
     font-weight: bold;
 }
 
 nav ul li a:hover{
- background-color: #3abecf;
+ background-color: #666;
 }
 
 .btn-iniciar{
-    background-color: #3a5dcf;
+    background-color:  #356864;
     border: none;
     padding: 10px 70px;
-    margin: 30px;
+    margin: 0px;
     font-size: 16px;
     cursor: pointer;
     color: white;
@@ -61,7 +63,7 @@ nav ul li a:hover{
 }
 .text-section h1 {
     font-size: 48px;
-    color: #3a5dcf;
+    color: 383c41;
 }
 .text-section p {
     color: #666;
@@ -93,8 +95,10 @@ nav ul li a:hover{
 
 h2 {
     text-align: right;
-    color: coral;
+    color: black
 }
+
+
 
 
 

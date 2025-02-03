@@ -1,6 +1,6 @@
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #ceb83d54;
+    background-color: #fff;
     margin: 0;
     padding: 0;
 }
@@ -11,7 +11,7 @@ body {
     padding: 20px;
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(1, 1, 1, 0.1);
 }
 
 h1 {
@@ -20,7 +20,7 @@ h1 {
 }
 
 .card {
-    background-color: #f9f9f9;
+    background-color: #f9f9f9fd;
     padding: 20px;
     border-radius: 10px;
     margin-top: 20px;
@@ -60,7 +60,7 @@ p {
     transform: translate(180%);
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #356864;;
     color: #fff;
     text-decoration: none;
     border-radius: 5px;
@@ -68,12 +68,12 @@ p {
 }
 
 .btn-volver:hover {
-    background-color: #0056b3;
+    background-color: #9898a8;
 }
 
 h4 {
     text-align: right;
-    color: coral;
+    color: black;
 }
 
 header {
@@ -81,8 +81,8 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 15px 50px;
-    background-color: rgb(142, 197, 204);
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 6px rgb(255, 255, 255);
+    background-image: url('./backSAMM.jpg');
 }
 
 nav ul {
@@ -100,10 +100,11 @@ nav ul li a {
 }
 
 nav ul li a:hover{
- background-color: #3abecf;
+ background-color: #9898a8;
 }
 
 .logo {
     font-size: 24px;
     font-weight: bold;
+    color: #ffffff;
 }
