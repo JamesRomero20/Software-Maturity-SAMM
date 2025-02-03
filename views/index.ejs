@@ -8,9 +8,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="cont">
+        <h1>APPLYING SAMM</h1>
+    </div>
     <div class="contenedor">
-        <h1>Software Security</h1>
-        <h4>Este es un software para medir el nivel de madurez de un proyecto</h4>
+        <h4>APLICATIVO WEB PARA EVALUAR<br>LA MADUREZ DEL SOFTWARE</h4>
+        <br>
+        <P>Este es un aplicativo web  que permite evaluar la madurez de un proyecto<br>
+        de software mediante la metodología SAMM</p>
+         
+    </div> 
+
+    <!-- Nuevo contenedor debajo del anterior -->
+    <div class="contenedor2">
+        
         <% if (login) { %>                
             <h2>Usuario conectado: <strong><%= name %></strong></h2>                        
             <a href="logout" class="a-logout">Logout</a>
@@ -18,6 +29,13 @@
             <h3>Bienvenido, <strong><%= name %></strong></h3>   
             <a href="login" class="a-login">Ir a Login</a>
         <% } %>
+        
     </div>
+
+    <div class="pie">
+        <p style="color: #000000; margin-left: 40px;">Web application to evaluate the maturity of software developed by UNL students</p>
+    </div>
+
+    
 </body>
 </html>

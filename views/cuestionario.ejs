@@ -6,7 +6,6 @@
     <title>Cuestionario de Evaluación</title>
     <link rel="stylesheet" href="resources/css/style-cuestionario.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <% if (login) { %>                
@@ -20,13 +19,13 @@
             </ul>
         </nav>
     </header>
+
     <div class="container">
         <h1>Cuestionario de Evaluación</h1>
         
         <form id="cuestionario">
             <div id="secciones-container"></div>
             <button type="button" onclick="calcularTotal()">Calcular Total</button>
-            <button type="button" onclick="guardarResultados()">Guardar</button>
         </form>
 
         <div id="dashboard">
@@ -48,9 +47,6 @@
                     <tr>
                         <td><strong>Nivel de Madurez</strong></td>
                         <td id="nivel-madurez">0</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" id="mensaje-madurez"></td>
                     </tr>
                 </tfoot>
             </table>
@@ -254,27 +250,19 @@
             resultadosSecciones.appendChild(fila);
     });
     let promedio = totalGeneral / secciones.length;
-    
     let nivelMadurez;
-    let mensajeMadurez = '';
     if (promedio >= 0 && promedio <= 6) {
         nivelMadurez = 1;
-        mensajeMadurez = 'Nivel 1: Madurez inicial. Se requiere mejorar los procesos y controles de seguridad.';
     } else if (promedio >= 7 && promedio <= 12) {
         nivelMadurez = 2;
-        mensajeMadurez = 'Nivel 2: Madurez intermedia. Los procesos y controles de seguridad están en desarrollo, pero aún hay áreas de mejora.';
     } else if (promedio >= 13 && promedio <= 18) {
         nivelMadurez = 3;
-        mensajeMadurez = 'Nivel 3: Madurez avanzada. Los procesos y controles de seguridad están bien establecidos y son efectivos.';
     } else {
         nivelMadurez = "Fuera de rango";
-        mensajeMadurez = 'El promedio está fuera del rango esperado. Revise los datos ingresados.';
     }
-
     document.getElementById('total-general').innerText = totalGeneral.toFixed(2);
     document.getElementById('nivel-madurez').innerText = nivelMadurez;
     document.getElementById('total-general').innerText = totalGeneral;
-    document.getElementById('mensaje-madurez').innerText = mensajeMadurez;
 
     if (!grafica) {
         grafica = new Chart(document.getElementById('grafica-resultados'), {
@@ -305,7 +293,7 @@
         grafica.data.datasets[0].borderColor = colores;
         grafica.update(); 
     }
-    }
+}
 
     function getColorAleatorio() {
     const r = Math.floor(Math.random() * 256);
@@ -313,22 +301,6 @@
     const b = Math.floor(Math.random() * 256);
     return `rgba(${r}, ${g}, ${b}, 0.6)`;
     }
-
-    function guardarResultados() {
-    const resultados = secciones.map(seccion => ({
-        nombre: seccion.nombre,
-        puntaje: parseFloat(document.getElementById(`total-${seccion.id}`).innerText)
-    }));
-    const nivelMadurez = document.getElementById('nivel-madurez').innerText;
-    const mensajeMadurez = document.getElementById('mensaje-madurez').innerText;
-
-    // Convertir los resultados a JSON para pasarlos como parámetro
-    const resultadosJSON = JSON.stringify(resultados);
-
-    // Redirigir a la página de resultados con los datos en la URL
-    window.location.href = `resultados?resultados=${encodeURIComponent(resultadosJSON)}&nivelMadurez=${encodeURIComponent(nivelMadurez)}&mensajeMadurez=${encodeURIComponent(mensajeMadurez)}`;
-    }
-
 
     window.onload = generarPreguntas;
     </script>
