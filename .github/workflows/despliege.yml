@@ -3,7 +3,7 @@ name: Despliegue
 on:
 
   push:
-    branches: ["main"]
+    branches: [ "main" , "Dev"]
 
 
   workflow_dispatch:
