@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,327 +8,488 @@
     <link rel="stylesheet" href="resources/css/style-cuestionario.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
-    <% if (login) { %>                
-        <h3>Usuario: <strong> <%= name %></strong></h3>
-    <% } %>
-    <header>
-        <div class="logo">Software Security</div>
-        <nav>
-            <ul>
-                <li><a href="principal">Principal</a></li>
-            </ul>
-        </nav>
-    </header>
-    <div class="container">
-        <h1>Cuestionario de Evaluación</h1>
-        
-        <form id="cuestionario">
-            <div id="secciones-container"></div>
-            <button type="button" onclick="calcularTotal()">Calcular Total</button>
-            <button type="button" onclick="guardarResultados()">Guardar</button>
-        </form>
+    <% if (login) { %>
+        <h3>Usuario: <strong>
+                <%= name %>
+            </strong></h3>
+        <% } %>
+            <header>
+                <div class="logo">Software Security</div>
+                <nav>
+                    <ul>
+                        <li><a href="principal">Principal</a></li>
+                    </ul>
+                </nav>
+            </header>
+            <div class="container">
+                <h1>Cuestionario de Evaluación</h1>
 
-        <div id="dashboard">
-            <h2>Resultados</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Sección</th>
-                        <th>Puntaje Total</th>
-                    </tr>
-                    
-                </thead>
-                <tbody id="resultados-secciones"></tbody>
-                <tfoot>
-                    <tr>
-                        <td><strong>Total General</strong></td>
-                        <td id="total-general">0</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Nivel de Madurez</strong></td>
-                        <td id="nivel-madurez">0</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" id="mensaje-madurez"></td>
-                    </tr>
-                </tfoot>
-            </table>
-            <div style="width: 80%; margin: 20px auto;">
-                <canvas id="grafica-resultados"></canvas>
-            </div>
-        </div>
-    </div>
+                <form id="cuestionario">
+                    <div id="secciones-container"></div>
+                    <button type="button" onclick="calcularTotal()">Calcular Total</button>
+                    <button type="button" onclick="guardarResultados()">Guardar</button>
+                </form>
 
-    <script>
-        const secciones = [
-            { id: 'gobernanza', nombre: 'Gobernanza', preguntas: [
-                "¿Conoce el apetito de riesgo de toda la empresa para sus aplicaciones?",
-                "¿Dispone de un plan estratégico para la seguridad de las aplicaciones y lo utiliza para tomar decisiones?",
-                "¿Revisa y actualiza periódicamente el Plan Estratégico de Seguridad de las Aplicaciones?",
-                "¿Utiliza un conjunto de parámetros para medir la eficacia y eficiencia del programa de seguridad de las aplicaciones en todas las aplicaciones?",
-                "¿Ha definido indicadores clave de rendimiento (KPI) a partir de las métricas de seguridad de las aplicaciones disponibles?",
-                "¿Actualiza la estrategia y la hoja de ruta de seguridad de las aplicaciones basándose en los indicadores y KPI de seguridad de las aplicaciones?",
-                "¿Dispone y aplica un conjunto común de políticas y normas en toda su organización?",
-                "¿Publica las políticas de la organización como guiones de prueba o libros de ejecución para facilitar su interpretación por parte de los equipos de desarrollo?",
-                "¿Informa periódicamente sobre el cumplimiento de las políticas y normas, y utiliza esa información para orientar los esfuerzos de mejora del cumplimiento?",
-                "¿Tiene una visión completa de sus obligaciones de cumplimiento externas?",
-                "¿Dispone de un conjunto estándar de requisitos de seguridad y procedimientos de verificación que aborden las obligaciones de cumplimiento externas de la organización?",
-                "¿Informa periódicamente sobre el cumplimiento de las obligaciones de cumplimiento externas y utiliza esa información para orientar los esfuerzos encaminados a colmar las lagunas de cumplimiento?",
-                "¿Exige que los empleados implicados en el desarrollo de aplicaciones reciban formación en SDLC?",
-                "¿Está la formación adaptada a funciones concretas, como desarrolladores, probadores o responsables de seguridad?",
-                "¿Ha identificado a un responsable de seguridad para cada equipo de desarrollo?",
-                "¿Dispone la organización de un Centro de Excelencia de Software Seguro (SSCE)?",
-                "¿Existe un portal centralizado en el que los desarrolladores y profesionales de la seguridad de las aplicaciones de distintos equipos y unidades de negocio puedan comunicarse y compartir información?",
-            ]},
-            { id: 'diseño', nombre: 'Diseño', preguntas: [
-                "¿Clasifica las aplicaciones según el riesgo empresarial basándose en una serie de preguntas sencillas y predefinidas?",
-                "¿Utiliza perfiles de riesgo de aplicación centralizados y cuantificados para evaluar el riesgo empresarial?",
-                "¿Revisa y actualiza periódicamente los perfiles de riesgo de sus aplicaciones?",
-                "¿Identifica y gestiona los fallos de diseño arquitectónico con el modelado de amenazas?",
-                "¿Utiliza una metodología estándar, alineada con los niveles de riesgo de su aplicación?",
-                "¿Revisa y actualiza regularmente la metodología de modelado de amenazas para sus aplicaciones?",
-                "¿Especifican los equipos de proyecto los requisitos de seguridad durante el desarrollo?",
-                "¿Define, estructura e incluye la priorización en los artefactos del proceso de recopilación de requisitos de seguridad?",
-                "¿Utiliza un framework estándar para agilizar la obtención de requisitos de seguridad?",
-                "¿Revisan las partes interesadas las colaboraciones con proveedores en cuanto a requisitos de seguridad y metodología?",
-                "¿Cumplen los proveedores las responsabilidades de seguridad y las medidas de calidad de los acuerdos de nivel de servicio definidos por la organización?",
-                "¿Están alineados los proveedores con los controles de seguridad estándar y las herramientas y procesos de desarrollo de software que utiliza la organización?",
-                "¿Utilizan los equipos principios de seguridad durante el diseño?",
-                "¿Utiliza servicios de seguridad compartidos durante el diseño?",
-                "¿Basa su diseño en las arquitecturas de referencia disponibles?",
-                "¿Evalúa la calidad de la seguridad de las tecnologías importantes utilizadas para el desarrollo?",
-                "¿Dispone de una lista de tecnologías recomendadas para la organización?",
-                "¿Imponen el uso de las tecnologías recomendadas dentro de la organización?"
-            ]},
-            { id: 'implementacion', nombre: 'Implementación', preguntas: [
-                "¿Se describe formalmente todo el proceso de construcción?",
-                "¿Está totalmente automatizado el proceso de creación?",
-                "¿Realiza comprobaciones de seguridad automáticas en sus procesos de compilación?",
-                "¿Tienes conocimientos sólidos sobre las dependencias de las que dependes?",
-                "¿Maneja el riesgo de dependencia de terceros mediante un proceso formal?",
-                "¿Impide la compilación de software si está afectado por vulnerabilidades en las dependencias?",
-                "¿Utiliza procesos de despliegue repetibles?",
-                "¿Están automatizados los procesos de despliegue y emplean controles de seguridad?",
-                "¿Valida sistemáticamente la integridad de los artefactos desplegados?",
-                "¿Limita el acceso a los secretos de aplicación según el principio del menor privilegio?",
-                "¿Inyecta secretos de producción en los archivos de configuración durante la implantación?",
-                "¿Practica una gestión adecuada del ciclo de vida de los secretos de las aplicaciones?",
-                "¿Rastrea todos los defectos de seguridad conocidos en lugares accesibles?",
-                "¿Mantiene una visión general del estado de los defectos de seguridad en toda la organización?",
-                "¿Aplican acuerdos de nivel de servicio para corregir los defectos de seguridad?",
-                "¿Utiliza métricas básicas sobre los defectos de seguridad registrados para llevar a cabo actividades de mejora rápida?",
-                "¿Mejora su programa de garantía de seguridad en función de métricas estandarizadas?",
-                "¿Evalúa periódicamente la eficacia de sus indicadores de seguridad para que su aportación contribuya a impulsar su estrategia de seguridad?"
-            ]},
-            { id: 'verificacion', nombre: 'Verificación', preguntas: [
-                "¿Revisa ad hoc la arquitectura de la aplicación en busca de objetivos clave de seguridad?",
-                "¿Revisa periódicamente los mecanismos de seguridad de su arquitectura?",
-                "¿Revisa periódicamente la eficacia de los controles de seguridad?",
-                "¿Revisa ad hoc la arquitectura de la aplicación para mitigar las amenazas típicas?",
-                "¿Evalúa periódicamente las amenazas a su arquitectura?",
-                "¿Actualiza periódicamente sus arquitecturas de referencia basándose en los resultados de las evaluaciones de arquitectura?",
-                "¿Prueba las aplicaciones para comprobar el correcto funcionamiento de los controles de seguridad estándar?",
-                "¿Escribe y ejecuta sistemáticamente secuencias de comandos de prueba para verificar la funcionalidad de los requisitos de seguridad?",
-                "¿Pruebas automáticamente las aplicaciones para detectar regresiones de seguridad?",
-                "¿Pruebas las aplicaciones utilizando técnicas de aleatorización o fuzzing?",
-                "¿Crea casos de abuso a partir de requisitos funcionales y los utiliza para realizar pruebas de seguridad?",
-                "¿Realiza pruebas de denegación de servicio y de estrés de seguridad?",
-                "¿Escanea las aplicaciones con herramientas automatizadas de pruebas de seguridad?",
-                "¿Adapta las herramientas de seguridad automatizada a sus aplicaciones y pilas tecnológicas?",
-                "¿Integra pruebas de seguridad automatizadas en el proceso de creación y despliegue?",
-                "¿Revisa manualmente la calidad de la seguridad de determinados componentes de alto riesgo?",
-                "¿Realiza pruebas de penetración de sus aplicaciones a intervalos regulares?",
-                "¿Utiliza los resultados de las pruebas de seguridad para mejorar el ciclo de vida del desarrollo?"
-            ]},
-            { id: 'operaciones', nombre: 'Operaciones', preguntas: [
-                "¿Analiza periódicamente los datos de registro para detectar incidentes de seguridad?",
-                "¿Sigue un proceso documentado para la detección de incidentes?",
-                "¿Se revisa y actualiza periódicamente el proceso de detección de incidentes?",
-                "¿Responde a los incidentes detectados?",
-                "¿Utiliza un proceso repetible para la gestión de incidentes?",
-                "¿Disponen de un equipo especializado de respuesta a incidentes?",
-                "¿Defiende las configuraciones de los componentes clave de sus pilas tecnológicas?",
-                "¿Dispone de líneas de base de endurecimiento para sus componentes?",
-                "¿Supervisa y aplica la conformidad con las líneas de base de endurecimiento?",
-                "¿Identifican y parchean los componentes vulnerables?",
-                "¿Sigue un proceso establecido para actualizar los componentes de sus pilas tecnológicas?",
-                "¿Evalúa regularmente los componentes y revisa el estado del nivel de parches?",
-                "¿Protege y trata la información de acuerdo con los requisitos de protección de los datos almacenados y procesados en cada aplicación?",
-                "¿Mantiene un catálogo de datos que incluya tipos, niveles de sensibilidad y ubicaciones de procesamiento y almacenamiento?",
-                "¿Revisa y actualiza periódicamente el catálogo de datos y sus políticas y procedimientos de protección de datos?",
-                "¿Identifica y elimina sistemas, aplicaciones, dependencias de aplicaciones o servicios que ya no se utilizan, han llegado al final de su vida útil o ya no se desarrollan o soportan activamente?",
-                "¿Sigue un proceso establecido para eliminar todos los recursos asociados, como parte del desmantelamiento de sistemas, aplicaciones, dependencias de aplicaciones o servicios no utilizados?",
-                "¿Evalúa periódicamente el estado del ciclo de vida y el soporte de cada activo de software y componente de infraestructura subyacente, y calcula su fin de vida"
-            ]},
-        ];
-
-        function generarPreguntas() {
-            let container = document.getElementById('secciones-container');
-            container.innerHTML = '';
-
-            secciones.forEach(seccion => {
-                let div = document.createElement("div");
-                div.classList.add("seccion");
-                div.innerHTML = `
-                    <h2>${seccion.nombre}</h2>
+                <div id="dashboard">
+                    <h2>Resultados</h2>
                     <table>
-                        <tr>
-                            <th>Pregunta</th>
-                            <th>Respuestas</th>
-                            <th>Valor</th>
-                        </tr>
-                        <tbody id="tabla-${seccion.id}"></tbody>
-                        <tr>
-                            <td colspan="2"><strong>Total</strong></td>
-                            <td id="total-${seccion.id}">0</td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Sección</th>
+                                <th>Puntaje Total</th>
+                            </tr>
+
+                        </thead>
+                        <tbody id="resultados-secciones"></tbody>
+                        <tfoot>
+                            <tr>
+                                <td><strong>Total General</strong></td>
+                                <td id="total-general">0</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Nivel de Madurez General</strong></td>
+                                <td id="nivel-madurez">0</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" id="mensaje-madurez1"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" id="mensaje-madurez2"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" id="mensaje-madurez3"></td>
+                            </tr>
+                        </tfoot>
                     </table>
-                `;
+                    <div style="width: 80%; margin: 20px auto;">
+                        <canvas id="grafica-resultados"></canvas>
+                    </div>
+                    <div style="width: 80%; margin: 20px auto;">
+                        <canvas id="grafica-radar"></canvas>
+                    </div>
+                </div>
+            </div>
 
-                container.appendChild(div);
-                let tabla = document.getElementById(`tabla-${seccion.id}`);
+            <script>
+                const secciones = [
+                    {
+                        id: 'gobernanza', nombre: 'Gobernanza', preguntas: [
+                            "¿Conoce el apetito de riesgo de toda la empresa para sus aplicaciones?",
+                            "¿Dispone de un plan estratégico para la seguridad de las aplicaciones y lo utiliza para tomar decisiones?",
+                            "¿Revisa y actualiza periódicamente el Plan Estratégico de Seguridad de las Aplicaciones?",
+                            "¿Utiliza un conjunto de parámetros para medir la eficacia y eficiencia del programa de seguridad de las aplicaciones en todas las aplicaciones?",
+                            "¿Ha definido indicadores clave de rendimiento (KPI) a partir de las métricas de seguridad de las aplicaciones disponibles?",
+                            "¿Actualiza la estrategia y la hoja de ruta de seguridad de las aplicaciones basándose en los indicadores y KPI de seguridad de las aplicaciones?",
+                            "¿Dispone y aplica un conjunto común de políticas y normas en toda su organización?",
+                            "¿Publica las políticas de la organización como guiones de prueba o libros de ejecución para facilitar su interpretación por parte de los equipos de desarrollo?",
+                            "¿Informa periódicamente sobre el cumplimiento de las políticas y normas, y utiliza esa información para orientar los esfuerzos de mejora del cumplimiento?",
+                            "¿Tiene una visión completa de sus obligaciones de cumplimiento externas?",
+                            "¿Dispone de un conjunto estándar de requisitos de seguridad y procedimientos de verificación que aborden las obligaciones de cumplimiento externas de la organización?",
+                            "¿Informa periódicamente sobre el cumplimiento de las obligaciones de cumplimiento externas y utiliza esa información para orientar los esfuerzos encaminados a colmar las lagunas de cumplimiento?",
+                            "¿Exige que los empleados implicados en el desarrollo de aplicaciones reciban formación en SDLC?",
+                            "¿Está la formación adaptada a funciones concretas, como desarrolladores, probadores o responsables de seguridad?",
+                            "¿Ha identificado a un responsable de seguridad para cada equipo de desarrollo?",
+                            "¿Dispone la organización de un Centro de Excelencia de Software Seguro (SSCE)?",
+                            "¿Existe un portal centralizado en el que los desarrolladores y profesionales de la seguridad de las aplicaciones de distintos equipos y unidades de negocio puedan comunicarse y compartir información?",
+                        ]
+                    },
+                    {
+                        id: 'diseno', nombre: 'Diseño', preguntas: [
+                            "¿Clasifica las aplicaciones según el riesgo empresarial basándose en una serie de preguntas sencillas y predefinidas?",
+                            "¿Utiliza perfiles de riesgo de aplicación centralizados y cuantificados para evaluar el riesgo empresarial?",
+                            "¿Revisa y actualiza periódicamente los perfiles de riesgo de sus aplicaciones?",
+                            "¿Identifica y gestiona los fallos de diseño arquitectónico con el modelado de amenazas?",
+                            "¿Utiliza una metodología estándar, alineada con los niveles de riesgo de su aplicación?",
+                            "¿Revisa y actualiza regularmente la metodología de modelado de amenazas para sus aplicaciones?",
+                            "¿Especifican los equipos de proyecto los requisitos de seguridad durante el desarrollo?",
+                            "¿Define, estructura e incluye la priorización en los artefactos del proceso de recopilación de requisitos de seguridad?",
+                            "¿Utiliza un framework estándar para agilizar la obtención de requisitos de seguridad?",
+                            "¿Revisan las partes interesadas las colaboraciones con proveedores en cuanto a requisitos de seguridad y metodología?",
+                            "¿Cumplen los proveedores las responsabilidades de seguridad y las medidas de calidad de los acuerdos de nivel de servicio definidos por la organización?",
+                            "¿Están alineados los proveedores con los controles de seguridad estándar y las herramientas y procesos de desarrollo de software que utiliza la organización?",
+                            "¿Utilizan los equipos principios de seguridad durante el diseño?",
+                            "¿Utiliza servicios de seguridad compartidos durante el diseño?",
+                            "¿Basa su diseño en las arquitecturas de referencia disponibles?",
+                            "¿Evalúa la calidad de la seguridad de las tecnologías importantes utilizadas para el desarrollo?",
+                            "¿Dispone de una lista de tecnologías recomendadas para la organización?",
+                            "¿Imponen el uso de las tecnologías recomendadas dentro de la organización?"
+                        ]
+                    },
+                    {
+                        id: 'implementacion', nombre: 'Implementación', preguntas: [
+                            "¿Se describe formalmente todo el proceso de construcción?",
+                            "¿Está totalmente automatizado el proceso de creación?",
+                            "¿Realiza comprobaciones de seguridad automáticas en sus procesos de compilación?",
+                            "¿Tienes conocimientos sólidos sobre las dependencias de las que dependes?",
+                            "¿Maneja el riesgo de dependencia de terceros mediante un proceso formal?",
+                            "¿Impide la compilación de software si está afectado por vulnerabilidades en las dependencias?",
+                            "¿Utiliza procesos de despliegue repetibles?",
+                            "¿Están automatizados los procesos de despliegue y emplean controles de seguridad?",
+                            "¿Valida sistemáticamente la integridad de los artefactos desplegados?",
+                            "¿Limita el acceso a los secretos de aplicación según el principio del menor privilegio?",
+                            "¿Inyecta secretos de producción en los archivos de configuración durante la implantación?",
+                            "¿Practica una gestión adecuada del ciclo de vida de los secretos de las aplicaciones?",
+                            "¿Rastrea todos los defectos de seguridad conocidos en lugares accesibles?",
+                            "¿Mantiene una visión general del estado de los defectos de seguridad en toda la organización?",
+                            "¿Aplican acuerdos de nivel de servicio para corregir los defectos de seguridad?",
+                            "¿Utiliza métricas básicas sobre los defectos de seguridad registrados para llevar a cabo actividades de mejora rápida?",
+                            "¿Mejora su programa de garantía de seguridad en función de métricas estandarizadas?",
+                            "¿Evalúa periódicamente la eficacia de sus indicadores de seguridad para que su aportación contribuya a impulsar su estrategia de seguridad?"
+                        ]
+                    },
+                    {
+                        id: 'verificacion', nombre: 'Verificación', preguntas: [
+                            "¿Revisa ad hoc la arquitectura de la aplicación en busca de objetivos clave de seguridad?",
+                            "¿Revisa periódicamente los mecanismos de seguridad de su arquitectura?",
+                            "¿Revisa periódicamente la eficacia de los controles de seguridad?",
+                            "¿Revisa ad hoc la arquitectura de la aplicación para mitigar las amenazas típicas?",
+                            "¿Evalúa periódicamente las amenazas a su arquitectura?",
+                            "¿Actualiza periódicamente sus arquitecturas de referencia basándose en los resultados de las evaluaciones de arquitectura?",
+                            "¿Prueba las aplicaciones para comprobar el correcto funcionamiento de los controles de seguridad estándar?",
+                            "¿Escribe y ejecuta sistemáticamente secuencias de comandos de prueba para verificar la funcionalidad de los requisitos de seguridad?",
+                            "¿Pruebas automáticamente las aplicaciones para detectar regresiones de seguridad?",
+                            "¿Pruebas las aplicaciones utilizando técnicas de aleatorización o fuzzing?",
+                            "¿Crea casos de abuso a partir de requisitos funcionales y los utiliza para realizar pruebas de seguridad?",
+                            "¿Realiza pruebas de denegación de servicio y de estrés de seguridad?",
+                            "¿Escanea las aplicaciones con herramientas automatizadas de pruebas de seguridad?",
+                            "¿Adapta las herramientas de seguridad automatizada a sus aplicaciones y pilas tecnológicas?",
+                            "¿Integra pruebas de seguridad automatizadas en el proceso de creación y despliegue?",
+                            "¿Revisa manualmente la calidad de la seguridad de determinados componentes de alto riesgo?",
+                            "¿Realiza pruebas de penetración de sus aplicaciones a intervalos regulares?",
+                            "¿Utiliza los resultados de las pruebas de seguridad para mejorar el ciclo de vida del desarrollo?"
+                        ]
+                    },
+                    {
+                        id: 'operaciones', nombre: 'Operaciones', preguntas: [
+                            "¿Analiza periódicamente los datos de registro para detectar incidentes de seguridad?",
+                            "¿Sigue un proceso documentado para la detección de incidentes?",
+                            "¿Se revisa y actualiza periódicamente el proceso de detección de incidentes?",
+                            "¿Responde a los incidentes detectados?",
+                            "¿Utiliza un proceso repetible para la gestión de incidentes?",
+                            "¿Disponen de un equipo especializado de respuesta a incidentes?",
+                            "¿Defiende las configuraciones de los componentes clave de sus pilas tecnológicas?",
+                            "¿Dispone de líneas de base de endurecimiento para sus componentes?",
+                            "¿Supervisa y aplica la conformidad con las líneas de base de endurecimiento?",
+                            "¿Identifican y parchean los componentes vulnerables?",
+                            "¿Sigue un proceso establecido para actualizar los componentes de sus pilas tecnológicas?",
+                            "¿Evalúa regularmente los componentes y revisa el estado del nivel de parches?",
+                            "¿Protege y trata la información de acuerdo con los requisitos de protección de los datos almacenados y procesados en cada aplicación?",
+                            "¿Mantiene un catálogo de datos que incluya tipos, niveles de sensibilidad y ubicaciones de procesamiento y almacenamiento?",
+                            "¿Revisa y actualiza periódicamente el catálogo de datos y sus políticas y procedimientos de protección de datos?",
+                            "¿Identifica y elimina sistemas, aplicaciones, dependencias de aplicaciones o servicios que ya no se utilizan, han llegado al final de su vida útil o ya no se desarrollan o soportan activamente?",
+                            "¿Sigue un proceso establecido para eliminar todos los recursos asociados, como parte del desmantelamiento de sistemas, aplicaciones, dependencias de aplicaciones o servicios no utilizados?",
+                            "¿Evalúa periódicamente el estado del ciclo de vida y el soporte de cada activo de software y componente de infraestructura subyacente, y calcula su fin de vida"
+                        ]
+                    },
+                ];
 
-                seccion.preguntas.forEach((pregunta, index) => {
-                    let fila = document.createElement("tr");
-                    fila.innerHTML = `
-                        <td>${pregunta}</td>
-                        <td>
-                            <select onchange="actualizarValor('${seccion.id}')">
-                                <option value="0">No</option>
-                                <option value="1">Sí</option>
-                                <option value="0.5">En parte</option>
-                            </select>
-                        </td>
-                        <td class="valor">0</td>
-                    `;
-                    tabla.appendChild(fila);
-                });
-            });
-        }
+                let totalGobernanza = 0;
+                let totalDiseno = 0;
+                let totalImplementacion = 0;
+                let totalVerificacion = 0;
+                let totalOperaciones = 0;
 
-        function actualizarValor(seccion) {
-            let total = 0;
-            document.querySelectorAll(`#tabla-${seccion} tr`).forEach(tr => {
-                let select = tr.querySelector("select");
-                let valorCelda = tr.querySelector(".valor");
-                if (select && valorCelda) {
-                    let valor = parseFloat(select.value);
-                    valorCelda.innerText = valor;
-                    total += valor;
+                function generarPreguntas() {
+                    let container = document.getElementById('secciones-container');
+                    container.innerHTML = '';
+
+                    secciones.forEach(seccion => {
+                        let div = document.createElement("div");
+                        div.classList.add("seccion");
+                        div.innerHTML = `
+            <h2>${seccion.nombre}</h2>
+            <table>
+                <tr>
+                    <th>Pregunta</th>
+                    <th>Respuestas</th>
+                    <th>Valor</th>
+                </tr>
+                <tbody id="tabla-${seccion.id}"></tbody>
+                <tr>
+                    <td colspan="2"><strong>Total</strong></td>
+                    <td id="total-${seccion.id}">0</td>
+                </tr>
+            </table>
+        `;
+
+                        container.appendChild(div);
+                        let tabla = document.getElementById(`tabla-${seccion.id}`);
+
+                        seccion.preguntas.forEach((pregunta, index) => {
+                            let fila = document.createElement("tr");
+                            fila.innerHTML = `
+                <td>${pregunta}</td>
+                <td>
+                    <select onchange="actualizarValor('${seccion.id}')">
+                        <option value="0">No</option>
+                        <option value="1">Sí</option>
+                        <option value="0.5">En parte</option>
+                    </select>
+                </td>
+                <td class="valor">0</td>
+            `;
+                            tabla.appendChild(fila);
+                        });
+                    });
                 }
-            });
-            document.getElementById(`total-${seccion}`).innerText = total;
-        }
 
-        function calcularTotal() {
-            secciones.forEach(seccion => {
-                actualizarValor(seccion.id); 
-            });
-            actualizarDashboard(); 
-        }
+                function actualizarValor(seccion) {
+                    let total = 0;
+                    document.querySelectorAll(`#tabla-${seccion} tr`).forEach(tr => {
+                        let select = tr.querySelector("select");
+                        let valorCelda = tr.querySelector(".valor");
+                        if (select && valorCelda) {
+                            let valor = parseFloat(select.value);
+                            valorCelda.innerText = valor;
+                            total += valor;
+                        }
+                    });
 
-        let grafica;
-        function actualizarDashboard() {
-            let resultadosSecciones = document.getElementById('resultados-secciones');
-            resultadosSecciones.innerHTML = '';
-            let totalGeneral = 0;
+                    document.getElementById(`total-${seccion}`).innerText = total;
 
-            let labels = []; 
-            let datos = [];  
-            let colores = []; 
+            
+                    switch (seccion) {
+                        case 'gobernanza':
+                            totalGobernanza = total;
+                            break;
+                        case 'diseno':
+                            totalDiseno = total;
+                            break;
+                        case 'implementacion':
+                            totalImplementacion = total;
+                            break;
+                        case 'verificacion':
+                            totalVerificacion = total;
+                            break;
+                        case 'operaciones':
+                            totalOperaciones = total;
+                            break;
+                        default:
+                            console.warn(`Sección desconocida: ${seccion}`);
+                    }
 
-         secciones.forEach(seccion => {
-            let totalSeccion = parseFloat(document.getElementById(`total-${seccion.id}`).innerText);
-            totalGeneral += totalSeccion;
+                }
 
-            labels.push(seccion.nombre);
-            datos.push(totalSeccion);
-            colores.push(getColorAleatorio()); 
+                function obtenerTotales() {
+                    return {
+                        gobernanza: totalGobernanza,
+                        diseno: totalDiseno,
+                        implementacion: totalImplementacion,
+                        verificacion: totalVerificacion,
+                        operaciones: totalOperaciones
+                    };
+                }
 
-            let fila = document.createElement("tr");
-            fila.innerHTML = `
+                function calcularTotal() {
+                    secciones.forEach(seccion => {
+                        actualizarValor(seccion.id);
+                    });
+                    actualizarDashboard();
+                }
+
+                let grafica;
+                function actualizarDashboard() {
+                    let resultadosSecciones = document.getElementById('resultados-secciones');
+                    resultadosSecciones.innerHTML = '';
+                    let totalGeneral = 0;
+
+                    let labels = [];
+                    let datos = [];
+                    let colores = [];
+
+                    secciones.forEach(seccion => {
+                        let totalSeccion = parseFloat(document.getElementById(`total-${seccion.id}`).innerText);
+                        totalGeneral += totalSeccion;
+
+                        labels.push(seccion.nombre);
+                        datos.push(totalSeccion);
+                        colores.push(getColorAleatorio());
+
+                        let fila = document.createElement("tr");
+                        fila.innerHTML = `
                 <td>${seccion.nombre}</td>
                 <td>${totalSeccion}</td>
             `;
-            resultadosSecciones.appendChild(fila);
-    });
-    let promedio = totalGeneral / secciones.length;
-    
-    let nivelMadurez;
-    let mensajeMadurez = '';
-    if (promedio >= 0 && promedio <= 6) {
-        nivelMadurez = 1;
-        mensajeMadurez = 'Nivel 1: Madurez inicial. Se requiere mejorar los procesos y controles de seguridad.';
-    } else if (promedio >= 7 && promedio <= 12) {
-        nivelMadurez = 2;
-        mensajeMadurez = 'Nivel 2: Madurez intermedia. Los procesos y controles de seguridad están en desarrollo, pero aún hay áreas de mejora.';
-    } else if (promedio >= 13 && promedio <= 18) {
-        nivelMadurez = 3;
-        mensajeMadurez = 'Nivel 3: Madurez avanzada. Los procesos y controles de seguridad están bien establecidos y son efectivos.';
-    } else {
-        nivelMadurez = "Fuera de rango";
-        mensajeMadurez = 'El promedio está fuera del rango esperado. Revise los datos ingresados.';
-    }
+                        resultadosSecciones.appendChild(fila);
+                    });
+                    let promedio = totalGeneral / secciones.length;
 
-    document.getElementById('total-general').innerText = totalGeneral.toFixed(2);
-    document.getElementById('nivel-madurez').innerText = nivelMadurez;
-    document.getElementById('total-general').innerText = totalGeneral;
-    document.getElementById('mensaje-madurez').innerText = mensajeMadurez;
+                    let nivelMadurez;
+                    let mensajeMadurez = '';
+                    if (promedio <= 6) {
+                        nivelMadurez = 1;
+                        
+                    } else if (promedio <= 12) {
+                        nivelMadurez = 2;
+                        
+                    } else if (promedio <= 18) {
+                        nivelMadurez = 3;
+                        
+                    } 
+                    mensajeMadurez1 = 'Nivel 1: Madurez inicial. Se requiere mejorar los procesos y controles de seguridad.';
+                    mensajeMadurez2 = 'Nivel 2: Madurez intermedia. Los procesos y controles de seguridad están en desarrollo, pero aún hay áreas de mejora.';
+                    mensajeMadurez3 = 'Nivel 3: Madurez avanzada. Los procesos y controles de seguridad están bien establecidos y son efectivos.';
 
-    if (!grafica) {
-        grafica = new Chart(document.getElementById('grafica-resultados'), {
-            type: 'bar', 
-            data: {
-                labels: labels, 
-                datasets: [{
-                    label: 'Resultado',
-                    data: datos, 
-                    backgroundColor: colores, 
-                    borderColor: colores,
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true 
+                    document.getElementById('total-general').innerText = totalGeneral.toFixed(2);
+                    document.getElementById('nivel-madurez').innerText = nivelMadurez;
+                    document.getElementById('total-general').innerText = totalGeneral;
+                    document.getElementById('mensaje-madurez1').innerText = mensajeMadurez1;
+                    document.getElementById('mensaje-madurez2').innerText = mensajeMadurez2;
+                    document.getElementById('mensaje-madurez3').innerText = mensajeMadurez3;
+
+                    if (!grafica) {
+                        grafica = new Chart(document.getElementById('grafica-resultados'), {
+                            type: 'bar',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Resultado',
+                                    data: datos,
+                                    backgroundColor: colores,
+                                    borderColor: colores,
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+
+                        grafica.data.labels = labels;
+                        grafica.data.datasets[0].data = datos;
+                        grafica.data.datasets[0].backgroundColor = colores;
+                        grafica.data.datasets[0].borderColor = colores;
+                        grafica.update();
                     }
+
+                    const ctxRadar = document.getElementById('grafica-radar').getContext('2d');
+
+                    const coloresFondo = [
+                        'rgba(249, 233, 60, 0.1)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(54, 162, 235, 0.2)'
+                    ];
+
+                    const coloresBorde = [
+                        'rgba(249, 233, 60, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(54, 162, 235, 1)'
+                    ];
+
+                    function obtenerDatosActualizados() {
+                        return [
+                            [totalGobernanza, 0, 0, 0, 0],
+                            [0, totalDiseno, 0, 0, 0],
+                            [0, 0, totalImplementacion, 0, 0],
+                            [0, 0, 0, totalVerificacion, 0],
+                            [0, 0, 0, 0, totalOperaciones]
+                        ];
+
+                    }
+
+                    function actualizarGrafica() {
+                        if (window.graficaRadar) {
+                            let nuevosDatos = obtenerDatosActualizados();
+                            window.graficaRadar.data.datasets.forEach((dataset, index) => {
+                                dataset.data = nuevosDatos[index];
+                            });
+                            window.graficaRadar.update();
+                        }
+
+                    }
+
+                    if (!window.graficaRadar) {
+                        const datosIniciales = obtenerDatosActualizados();
+
+                        const datasets = labels.map((label, index) => ({
+                            label: label,
+                            data: datosIniciales[index],
+                            backgroundColor: coloresFondo[index],
+                            borderColor: coloresBorde[index],
+                            borderWidth: 2,
+                            fill: true,
+                            spanGaps: false
+                        }));
+
+                        window.graficaRadar = new Chart(ctxRadar, {
+                            type: 'radar',
+                            data: {
+                                labels: labels,
+                                datasets: datasets
+                            },
+                            options: {
+                                scales: {
+                                    r: {
+                                        min: 0,
+                                        max: 18, 
+                                        ticks: {
+                                            stepSize: 6, 
+                                            callback: function (value) {
+                                                if (value <= 6) return 'Nivel de madurez 1';
+                                                if (value <= 12) return 'Nivel de madurez 2';
+                                                if (value <= 18) return 'Nivel de madurez 3';
+                                                return ''; 
+                                            }
+                                        },
+                                        pointLabels: {
+                                            font: {
+                                                size: 16
+                                            }
+                                        }
+                                    }
+                                },
+                                plugins: {
+                                    legend: {
+                                        display: true,
+                                        position: 'top'
+                                    }
+                                }
+                            }
+                        });
+
+
+                    }
+                    window.graficaRadar.update(actualizarGrafica);
+
                 }
-            }
-        });
-    } else {
-    
-        grafica.data.labels = labels;
-        grafica.data.datasets[0].data = datos;
-        grafica.data.datasets[0].backgroundColor = colores;
-        grafica.data.datasets[0].borderColor = colores;
-        grafica.update(); 
-    }
-    }
-
-    function getColorAleatorio() {
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
-    return `rgba(${r}, ${g}, ${b}, 0.6)`;
-    }
-
-    function guardarResultados() {
-    const resultados = secciones.map(seccion => ({
-        nombre: seccion.nombre,
-        puntaje: parseFloat(document.getElementById(`total-${seccion.id}`).innerText)
-    }));
-    const nivelMadurez = document.getElementById('nivel-madurez').innerText;
-    const mensajeMadurez = document.getElementById('mensaje-madurez').innerText;
-
-    const resultadosJSON = JSON.stringify(resultados);
-
-    window.location.href = `resultados?resultados=${encodeURIComponent(resultadosJSON)}&nivelMadurez=${encodeURIComponent(nivelMadurez)}&mensajeMadurez=${encodeURIComponent(mensajeMadurez)}`;
-    }
 
 
-    window.onload = generarPreguntas;
-    </script>
+                function getColorAleatorio() {
+                    const r = Math.floor(Math.random() * 256);
+                    const g = Math.floor(Math.random() * 256);
+                    const b = Math.floor(Math.random() * 256);
+                    return `rgba(${r}, ${g}, ${b}, 0.6)`;
+                }
+
+                function guardarResultados() {
+                    const resultados = secciones.map(seccion => ({
+                        nombre: seccion.nombre,
+                        puntaje: parseFloat(document.getElementById(`total-${seccion.id}`).innerText)
+                    }));
+                    const nivelMadurez = document.getElementById('nivel-madurez').innerText;
+                    const mensajeMadurez1 = document.getElementById('mensaje-madurez1').innerText;
+                    const mensajeMadurez2 = document.getElementById('mensaje-madurez2').innerText;
+                    const mensajeMadurez3 = document.getElementById('mensaje-madurez3').innerText;
+
+                    const resultadosJSON = JSON.stringify(resultados);
+
+                    window.location.href = `resultados?resultados=${encodeURIComponent(resultadosJSON)}&nivelMadurez=${encodeURIComponent(nivelMadurez)}&mensajeMadurez1=${encodeURIComponent(mensajeMadurez1)}&mensajeMadurez2=${encodeURIComponent(mensajeMadurez2)}&mensajeMadurez3=${encodeURIComponent(mensajeMadurez3)}`;
+                }
+
+
+                window.onload = generarPreguntas;
+            </script>
 </body>
+
 </html>
