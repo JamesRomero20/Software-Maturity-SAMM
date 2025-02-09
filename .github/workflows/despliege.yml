@@ -12,7 +12,7 @@ permissions:
   contents: read
   issues: write
   pages: write
-  id-token: write
+  #id-token: write
 
 
 concurrency:
