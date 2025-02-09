@@ -91,16 +91,16 @@ jobs:
       - name: Analisis de desempeño Lighthouse 
         uses: treosh/lighthouse-ci-action@v9
         with:
-          urls: https://jamesromero20.github.io/login/
+          urls: https://jamesromero20.github.io/Software-Maturity-SAMM/
      
       - name: Ejecutar prueba de carga Apache Benchmark
         run: |
-          ab -n 100 -c 10 https://jamesromero20.github.io/login/
+          ab -n 100 -c 10 https://jamesromero20.github.io/Software-Maturity-SAMM/
 
       - name: Escaneo ZAP
         uses: zaproxy/action-full-scan@v0.12.0
         with:
-         target: "https://jamesromero20.github.io/login/"
+         target: "https://jamesromero20.github.io/Software-Maturity-SAMM/"
         env:
           JAVA_OPTS: "-Xmx512m"
       
